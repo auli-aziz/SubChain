@@ -1,8 +1,9 @@
 const hre = require("hardhat");
 
 const tokens = (n) => {
-  return ethers.utils.parseUnits(n.toString(), "ether");
+  return hre.ethers.parseUnits(n.toString(), "ether");
 };
+
 
 async function main() {
   // Setup accounts & variables
@@ -13,9 +14,9 @@ async function main() {
   // Deploy contract
   const SubChain = await ethers.getContractFactory("SubChain");
   const subChain = await SubChain.deploy(NAME, SYMBOL);
-  await subChain.deployed();
+  await subChain.waitForDeployment();
 
-  console.log(`Deployed SubChain Contract at: ${subChain.address}\n`);
+  console.log(`Deployed SubChain Contract at: ${subChain.target}\n`);
   
   // List 6 events
   const occasions = [
