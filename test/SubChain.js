@@ -67,6 +67,35 @@ describe("SubChain", () => {
       expect(subscription.date).to.be.equal(SUB_DATE);
       expect(subscription.time).to.be.equal(SUB_TIME);
       expect(subscription.provider).to.be.equal(SUB_PROVIDER);
-    })
+    });
+  });
+
+  describe("Minting", () => {
+    const ID = 1;
+    const AMOUNT = ethers.parseEther("1");
+
+    beforeEach(async () => {
+      const transaction = await subChain
+        .connect(buyer)
+        .mint(ID, SUB_MAX_MONTHS, { value: AMOUNT });
+      await transaction.wait();
+    });
+
+    it("Updates max months", async () => {
+      const subscription = await subChain.getSubscription(1);
+      expect(subscription.maxMonths).to.be.equal(SUB_MAX_MONTHS);
+    });
+
+    it("Updates buying status", async () => {
+      const status = await subChain.hasBought(ID, buyer.address);
+      expect(status).to.be.equal(true);
+    });
+
+    it("Updates the contract balance", async () => {
+      const balance = await ethers.provider.getBalance(
+        await subChain.getAddress()
+      );
+      expect(balance).to.be.equal(AMOUNT);
+    });
   });
 });

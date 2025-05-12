@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 contract SubChain is ERC721 {
     address public owner;
     uint256 public totalSubscriptions;
+    uint256 public totalSupply;
 
     // defines the subscription structure
     struct Subscription {
@@ -21,6 +22,7 @@ contract SubChain is ERC721 {
 
     // stores key-value pairs (used to add id)
     mapping(uint256 => Subscription) subscriptions;
+    mapping(uint256 => mapping(address => bool)) public hasBought;
 
     // condition to insert subscription into list
     modifier onlyOwner {
@@ -56,6 +58,23 @@ contract SubChain is ERC721 {
             _time,
             _provider
         );
+    }
+
+    // buy subscription
+    function mint(uint256 _id, uint256 _months) public payable {
+        // Require that _id is not 0 or less than total subscriptions
+        require(_id != 0);
+        require(_id <= totalSubscriptions);
+
+        // Require that ETH sent is greater than cost
+        require(msg.value >= subscriptions[_id].cost);
+
+        subscriptions[_id].maxMonths = _months;
+
+        hasBought[_id][msg.sender] = true; // <-- Update buying status
+
+        totalSupply++;
+        _safeMint(msg.sender, totalSupply);
     }
 
     function getSubscription(uint256 _id) public view returns(Subscription memory) {
