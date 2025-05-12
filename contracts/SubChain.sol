@@ -81,4 +81,10 @@ contract SubChain is ERC721 {
         // returns the subscription stored within the blockchain
         return subscriptions[_id];
     }
+
+    // withdraw ether for the deployer/owner
+    function withdraw() public onlyOwner {
+        (bool success, ) = owner.call{value: address(this).balance}("");
+        require(success);
+    }
 }
