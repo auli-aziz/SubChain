@@ -1,86 +1,80 @@
-const hre = require("hardhat");
+const hre = require("hardhat")
 
 const tokens = (n) => {
-  return hre.ethers.parseUnits(n.toString(), "ether");
-};
-
+  return hre.ethers.parseUnits(n.toString(), 'ether')
+}
 
 async function main() {
-  // Setup accounts & variables
-  const [deployer] = await ethers.getSigners();
-  const NAME = "SubChain";
-  const SYMBOL = "TM";
+  const [deployer] = await ethers.getSigners()
+  const NAME = "SubChain"
+  const SYMBOL = "SUB"
 
-  // Deploy contract
-  const SubChain = await ethers.getContractFactory("SubChain");
-  const subChain = await SubChain.deploy(NAME, SYMBOL);
-  await subChain.waitForDeployment();
-
-  console.log(`Deployed SubChain Contract at: ${subChain.target}\n`);
   
-  // List 6 events
-  const occasions = [
-    {
-      name: "UFC Miami",
-      cost: tokens(3),
-      tickets: 0,
-      date: "May 31",
-      time: "6:00PM EST",
-      location: "Miami-Dade Arena - Miami, FL",
-    },
-    {
-      name: "ETH Tokyo",
-      cost: tokens(1),
-      tickets: 125,
-      date: "Jun 2",
-      time: "1:00PM JST",
-      location: "Tokyo, Japan",
-    },
-    {
-      name: "ETH Privacy Hackathon",
-      cost: tokens(0.25),
-      tickets: 200,
-      date: "Jun 9",
-      time: "10:00AM TRT",
-      location: "Turkey, Istanbul",
-    },
-    {
-      name: "Dallas Mavericks vs. San Antonio Spurs",
-      cost: tokens(5),
-      tickets: 0,
-      date: "Jun 11",
-      time: "2:30PM CST",
-      location: "American Airlines Center - Dallas, TX",
-    },
-    {
-      name: "ETH Global Toronto",
-      cost: tokens(1.5),
-      tickets: 125,
-      date: "Jun 23",
-      time: "11:00AM EST",
-      location: "Toronto, Canada",
-    },
-  ];
+  const SubChain = await ethers.getContractFactory("SubChain")
+  const subChain = await SubChain.deploy(NAME, SYMBOL)
+  const subChainAddress = await subChain.getAddress()
 
-  for (var i = 0; i < 5; i++) {
-    const transaction = await subChain
-      .connect(deployer)
-      .list(
-        occasions[i].name,
-        occasions[i].cost,
-        occasions[i].tickets,
-        occasions[i].date,
-        occasions[i].time,
-        occasions[i].location
-      );
+  console.log(`Deployed SubChain Contract at: ${subChainAddress}\n`)
 
-    await transaction.wait();
+  // Contoh 5 subscription plan
+  const subscriptions = [
+    {
+      name: "Netflix Basic",
+      cost: tokens(0.01),
+      months: 6,
+      date: "2025-06-01",
+      time: "00:00",
+      provider: "Netflix"
+    },
+    {
+      name: "Spotify Premium",
+      cost: tokens(0.008),
+      months: 12,
+      date: "2025-06-01",
+      time: "00:00",
+      provider: "Spotify"
+    },
+    {
+      name: "AWS Developer Tier",
+      cost: tokens(0.05),
+      months: 3,
+      date: "2025-06-01",
+      time: "00:00",
+      provider: "Amazon Web Services"
+    },
+    {
+      name: "Figma Pro",
+      cost: tokens(0.015),
+      months: 6,
+      date: "2025-06-01",
+      time: "00:00",
+      provider: "Figma Inc."
+    },
+    {
+      name: "Adobe CC",
+      cost: tokens(0.09),
+      months: 12,
+      date: "2025-06-01",
+      time: "00:00",
+      provider: "Adobe"
+    }
+  ]
 
-    console.log(`Listed Event ${i + 1}: ${occasions[i].name}`);
+  for (let i = 0; i < subscriptions.length; i++) {
+    const tx = await subChain.connect(deployer).list(
+      subscriptions[i].name,
+      subscriptions[i].cost,
+      subscriptions[i].months,
+      subscriptions[i].date,
+      subscriptions[i].time,
+      subscriptions[i].provider
+    )
+    await tx.wait()
+    console.log(`Listed Subscription ${i + 1}: ${subscriptions[i].name}`)
   }
 }
 
 main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+  console.error(error)
+  process.exitCode = 1
+})
