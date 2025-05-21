@@ -1,10 +1,9 @@
-import { ethers } from 'ethers'
-// import { hre } from 'hardhat'
+import { getAddress } from 'ethers'
 
 const Navigation = ({ account, setAccount }) => {
   const connectHandler = async () => {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-    // const account = hre.ethers.getAddress(accounts[0])
+    const account = getAddress(accounts[0])
     setAccount(account)
   }
 

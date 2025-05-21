@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ethers } from "ethers";
+import { getAddress } from "ethers";
 
 // Components
 import Navigation from "./components/Navigation";
@@ -15,12 +15,16 @@ import config from "./config.json";
 
 function App() {
   const [account, setAccount] = useState(null);
+
   const loadBlockchainData = async () => {
     try {
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
+      window.ethereum.on("accountsChanged", async () => {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        const address = getAddress(accounts[0]);
+        setAccount(address);
       });
-      setAccount(accounts[0]);
     } catch (e) {
       console.log(e.message);
     }
@@ -32,8 +36,12 @@ function App() {
 
   return (
     <div>
+      <header>
+        <Navigation account={account} setAccount={setAccount} />
+        <h2 className="header__title"><strong>Service</strong> Subscriptions</h2>
+      </header>
       <h1>Hello World</h1>
-      {account}
+      <p>{account}</p>
     </div>
   );
 }
