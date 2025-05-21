@@ -1,56 +1,50 @@
-import { ethers } from 'ethers'
-// import { hre } from 'hardhat'
+import { formatUnits } from 'ethers';
 
-const Card = ({ occasion, toggle, setToggle, setOccasion }) => {
+const Card = ({ subscription, toggle, setToggle, setSubscription }) => {
   const togglePop = () => {
-    setOccasion(occasion)
-    toggle ? setToggle(false) : setToggle(true)
-  }
+    setSubscription(subscription);
+    setToggle(!toggle);
+  };
 
   return (
-    <div className='card'>
-      <div className='card__info'>
-        <p className='card__date'>
-          <strong>{occasion.date}</strong><br />{occasion.time}
+    <div className="card">
+      <div className="card__info">
+        <p className="card__date">
+          <strong>{subscription[5]}</strong><br />
+          {subscription[6]}
         </p>
 
-        <h3 className='card__name'>
-          {occasion.name}
-        </h3>
+        <h3 className="card__name">{subscription[1]}</h3>
 
-        <p className='card__location'>
-          <small>{occasion.location}</small>
+        <p className="card__location">
+          <small>{subscription[7]}</small>
         </p>
 
-        <p className='card__cost'>
-          <strong>
-            {/* {hre.ethers.formatUnits(occasion.cost.toString(), 'ether')} */}
-          </strong>
-          ETH
+        <p className="card__cost">
+          <strong>{formatUnits(subscription[2].toString(), 'ether')}</strong> ETH
         </p>
 
-        {occasion.tickets.toString() === "0" ? (
+        {subscription[3].toString() === "0" ? (
           <button
             type="button"
-            className='card__button--out'
+            className="card__button--out"
             disabled
           >
-            Sold Out
+            Purchased
           </button>
         ) : (
           <button
             type="button"
-            className='card__button'
-            onClick={() => togglePop()}
+            className="card__button"
+            // onClick={togglePop}
           >
-            View Seats
+            Subscribe
           </button>
         )}
       </div>
-
       <hr />
-    </div >
+    </div>
   );
-}
+};
 
 export default Card;
