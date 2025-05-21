@@ -22,7 +22,6 @@ function App() {
   const [subscription, setSubscription] = useState({})
   const [toggle, setToggle] = useState(false)
 
-
   const loadBlockchainData = async () => {
     if (!window.ethereum) {
       alert("Please install MetaMask.");
