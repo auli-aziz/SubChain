@@ -3,9 +3,7 @@ import { BrowserProvider, Contract, getAddress } from "ethers";
 
 // Components
 import Navigation from "./components/Navigation";
-import Sort from "./components/Sort";
 import Card from "./components/Card";
-import SeatChart from "./components/SeatChart";
 
 // ABIs
 import SubChain from "./abis/SubChain.json";
@@ -13,86 +11,115 @@ import SubChain from "./abis/SubChain.json";
 // Config
 import config from "./config.json";
 
+import "./App.css";
+
+
 function App() {
   const [provider, setProvider] = useState(null);
   const [account, setAccount] = useState(null);
   const [subChain, setSubChain] = useState(null);
   const [subscriptions, setSubscriptions] = useState([]);
-
-  const [subscription, setSubscription] = useState({})
-  const [toggle, setToggle] = useState(false)
+  const [selectedSubscription, setSelectedSubscription] = useState(null);
+  const [isToggle, setIsToggle] = useState(false);
 
   const loadBlockchainData = async () => {
     if (!window.ethereum) {
-      alert("Please install MetaMask.");
+      alert("Please install MetaMask to use this app.");
       return;
     }
 
     try {
-      const provider = new BrowserProvider(window.ethereum);
-      setProvider(provider);
+      const _provider = new BrowserProvider(window.ethereum);
+      setProvider(_provider);
 
-      const signer = await provider.getSigner();
+      const signer = await _provider.getSigner();
       const userAddress = getAddress(await signer.getAddress());
       setAccount(userAddress);
 
-      const network = await provider.getNetwork();
-      const address = config[network.chainId].SubChain.address;
+      const network = await _provider.getNetwork();
+      const subChainAddress = config[network.chainId]?.SubChain?.address;
 
-      const subChain = new Contract(address, SubChain, signer);
-      setSubChain(subChain);
-
-      const totalSubscriptions = await subChain.totalSubscriptions();
-      const subscriptions = [];
-
-      for(var i = 1; i <= totalSubscriptions; i++) {
-        const subscription = await subChain.getSubscription(i);
-        subscriptions.push(subscription);
+      if (!subChainAddress) {
+        alert("Unsupported network. Please connect to a supported Ethereum network.");
+        return;
       }
 
-      setSubscriptions(subscriptions)
+      const contract = new Contract(subChainAddress, SubChain, signer);
+      setSubChain(contract);
 
-      console.log(subscriptions);
+      const totalSubs = await contract.totalSubscriptions();
+      const loadedSubs = [];
 
-      console.log("Contract Address:", subChain.target);
+      for (let i = 1; i <= totalSubs; i++) {
+        const subscription = await contract.getSubscription(i);
+        loadedSubs.push(subscription);
+      }
 
-      window.ethereum.on("accountsChanged", async () => {
-        const newSigner = await provider.getSigner();
-        const newAddress = getAddress(await newSigner.getAddress());
-        setAccount(newAddress);
+      setSubscriptions(loadedSubs);
+
+      // Listen for account changes
+      window.ethereum.on("accountsChanged", async (accounts) => {
+        if (accounts.length === 0) {
+          setAccount(null);
+          setSubscriptions([]);
+          setSubChain(null);
+        } else {
+          const newAccount = getAddress(accounts[0]);
+          setAccount(newAccount);
+        }
       });
+
     } catch (error) {
-      console.log("Error loading blockchain data:", error.message);
+      console.error("Error loading blockchain data:", error);
+      alert("Failed to load blockchain data. Check console for details.");
     }
   };
 
   useEffect(() => {
     loadBlockchainData();
+
+    return () => {
+      if (window.ethereum && window.ethereum.removeListener) {
+        window.ethereum.removeListener("accountsChanged", () => {});
+      }
+    };
   }, []);
 
   return (
-    <div>
-      <header>
-        <Navigation account={account} setAccount={setAccount} />
+    <div className="app dark">
+      <Navigation account={account} setAccount={setAccount} />
+
+      <header className="app-header">
         <h2 className="header__title">
           <strong>Service</strong> Subscriptions
         </h2>
       </header>
-      <div className="cards">
-        {subscriptions.map((subscription, index) => (
-          <Card
-            subscription={subscription}
-            id={index + 1}
-            tokenMaster={subChain}
-            provider={provider}
-            account={account}
-            toggle={toggle}
-            setToggle={setToggle}
-            setSubscription={setSubscription}
-            key={subscription.name}
-          />
-        ))}
-      </div>
+
+      <main className="app-main">
+        {subscriptions.length > 0 ? (
+          <div className="cards-grid">
+            {subscriptions.map((subscription, idx) => (
+              <Card
+                key={subscription.id || idx}
+                subscription={subscription}
+                id={idx + 1}
+                tokenMaster={subChain}
+                provider={provider}
+                account={account}
+                toggle={isToggle}
+                setToggle={setIsToggle}
+                setSubscription={setSelectedSubscription}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="no-subscriptions-message">
+            {account
+              ? "Loading subscriptions..."
+              : "Please connect your wallet to see available subscriptions."}
+          </p>
+        )}
+      </main>
     </div>
   );
 }

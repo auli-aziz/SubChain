@@ -1,0 +1,125 @@
+/* Reset basic margin/padding */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #121212; /* Dark background */
+  padding: 12px 24px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #f0f0f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.nav__logo {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #00bcd4; /* Accent color */
+  cursor: pointer;
+  user-select: none;
+}
+
+.nav__search {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  width: 280px;
+  transition: box-shadow 0.2s ease;
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+}
+
+.nav__search::placeholder {
+  color: #888;
+}
+
+.nav__search:focus {
+  outline: none;
+  box-shadow: 0 0 8px #00bcd4;
+}
+
+.nav__links {
+  list-style: none;
+  display: flex;
+  gap: 24px;
+}
+
+.nav__link {
+  color: #bbb;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+.nav__link:hover {
+  color: #00bcd4;
+}
+
+.nav__button {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #00bcd4;
+  color: #121212;
+  box-shadow: 0 4px 12px rgba(0, 188, 212, 0.5);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.nav__button:hover {
+  background-color: #0097a7;
+  box-shadow: 0 6px 14px rgba(0, 151, 167, 0.6);
+}
+
+.nav__button:disabled,
+.nav__button--connected {
+  background-color: #555;
+  color: #ccc;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* Responsive for smaller devices */
+@media (max-width: 720px) {
+  .nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .nav__brand {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .nav__search {
+    width: 100%;
+  }
+
+  .nav__links {
+    justify-content: space-around;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+}
