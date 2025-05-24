@@ -225,11 +225,6 @@ header {
   transition: 250ms ease all;
 }
 
-.card__info:hover {
-  background: rgba(18, 90, 198, 0.2);
-}
-
-
 .card__info p small {
   font-size: clamp(0.80rem, 2vw, 0.90rem);
 }
