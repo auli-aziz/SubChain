@@ -18,6 +18,7 @@ contract SubChain is ERC721 {
         string date;
         string time;
         string provider;
+        string category;
     }
 
     // Store subscriptions by ID
@@ -46,7 +47,8 @@ contract SubChain is ERC721 {
         uint256 _maxMonths,
         string memory _date,
         string memory _time,
-        string memory _provider
+        string memory _provider,
+        string memory _category
     ) public onlyOwner {
         totalSubscriptions++;
 
@@ -58,7 +60,8 @@ contract SubChain is ERC721 {
             _maxMonths,
             _date,
             _time,
-            _provider
+            _provider,
+            _category 
         );
     }
 

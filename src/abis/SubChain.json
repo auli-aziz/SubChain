@@ -35,7 +35,8 @@
       { "internalType": "uint256", "name": "_maxMonths", "type": "uint256" },
       { "internalType": "string", "name": "_date", "type": "string" },
       { "internalType": "string", "name": "_time", "type": "string" },
-      { "internalType": "string", "name": "_provider", "type": "string" }
+      { "internalType": "string", "name": "_provider", "type": "string" },
+      { "internalType": "string", "name": "_category", "type": "string" } 
     ],
     "name": "list",
     "outputs": [],
@@ -65,7 +66,8 @@
           { "internalType": "uint256", "name": "maxMonths", "type": "uint256" },
           { "internalType": "string", "name": "date", "type": "string" },
           { "internalType": "string", "name": "time", "type": "string" },
-          { "internalType": "string", "name": "provider", "type": "string" }
+          { "internalType": "string", "name": "provider", "type": "string" },
+          { "internalType": "string", "name": "category", "type": "string" }
         ],
         "internalType": "struct SubChain.Subscription",
         "name": "",

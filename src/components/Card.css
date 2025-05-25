@@ -1,92 +1,100 @@
 .card {
-  background-color: #1a1a1a;
-  border-radius: 16px;
+  background-color: #ffffff;
+  border-radius: 8px;
   padding: 1.5rem;
-  color: #e5e5e5;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  color: #333333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 240px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 220px;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  border: 1px solid #e0e0e0;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .card__info {
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.6rem;
 }
 
 .card__date {
-  font-size: 0.85rem;
-  color: #888;
+  font-size: 0.8rem;
+  color: #777777;
   font-weight: 400;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
 }
 
 .card__name {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #222222;
 }
 
 .card__location {
   font-size: 0.85rem;
-  color: #bbbbbb;
+  color: #666666;
 }
 
 .card__cost {
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #00ffc8;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1DB954;
+  margin-top: 0.5rem;
 }
 
 .card__button {
-  background-color: #2979ff;
-  color: #fff;
+  background-color: #1DB954;
+  color: #ffffff;
   border: none;
-  padding: 0.7rem 1.3rem;
-  border-radius: 8px;
+  padding: 0.65rem 1.2rem;
+  border-radius: 6px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  width: 100%;
+  margin-top: 1rem;
 }
 
 .card__button:hover {
-  background-color: #1565c0;
+  background-color: #17a049;
 }
 
 .card__button:disabled {
-  background-color: #555;
+  background-color: #ced4da;
+  color: #6c757d;
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .card__button--out {
-  background-color: #2a2a2a;
-  color: #aaa;
-  cursor: not-allowed;
+  background-color: #e9ecef;
+  color: #495057;
+  cursor: default;
   border: none;
-  padding: 0.7rem 1.3rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95rem;
+  padding: 0.65rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  width: 100%;
+  margin-top: 1rem;
 }
 
 hr {
   border: none;
-  border-top: 1px solid #333;
-  margin-top: 1.5rem;
+  border-top: 1px solid #eeeeee;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .card__actions {
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }

@@ -24,7 +24,8 @@ async function main() {
       months: 6,
       date: "2025-06-01",
       time: "00:00",
-      provider: "Netflix"
+      provider: "Netflix",
+      category: "Entertainment"
     },
     {
       name: "Spotify Premium",
@@ -32,7 +33,8 @@ async function main() {
       months: 12,
       date: "2025-06-01",
       time: "00:00",
-      provider: "Spotify"
+      provider: "Spotify",
+      category: "Entertainment"
     },
     {
       name: "AWS Developer Tier",
@@ -40,7 +42,8 @@ async function main() {
       months: 3,
       date: "2025-06-01",
       time: "00:00",
-      provider: "Amazon Web Services"
+      provider: "Amazon Web Services",
+      category: "Cloud Service"
     },
     {
       name: "Figma Pro",
@@ -48,7 +51,8 @@ async function main() {
       months: 6,
       date: "2025-06-01",
       time: "00:00",
-      provider: "Figma Inc."
+      provider: "Figma Inc.",
+      category: "Design"
     },
     {
       name: "Adobe CC",
@@ -56,7 +60,8 @@ async function main() {
       months: 12,
       date: "2025-06-01",
       time: "00:00",
-      provider: "Adobe"
+      provider: "Adobe",
+      category: "Design"
     }
   ]
 
@@ -67,10 +72,11 @@ async function main() {
       subscriptions[i].months,
       subscriptions[i].date,
       subscriptions[i].time,
-      subscriptions[i].provider
+      subscriptions[i].provider,
+      subscriptions[i].category
     )
     await tx.wait()
-    console.log(`Listed Subscription ${i + 1}: ${subscriptions[i].name}`)
+    console.log(`Listed Subscription ${i + 1}: ${subscriptions[i].name} (Category: ${subscriptions[i].category})`)
   }
 }
 

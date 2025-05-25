@@ -1,7 +1,9 @@
 import { getAddress } from "ethers";
 import "./Navigation.css";
 
-const Navigation = ({ account, setAccount }) => {
+const categories = ["All", "Design", "Cloud Service", "Entertainment", "Other"];
+
+const Navigation = ({ account, setAccount, currentCategory, onCategoryChange }) => {
   const connectHandler = async () => {
     try {
       const accounts = await window.ethereum.request({
@@ -18,52 +20,42 @@ const Navigation = ({ account, setAccount }) => {
     <nav className="nav">
       <div className="nav__brand">
         <h1 className="nav__logo">SubChain</h1>
+      </div>
+      <div className="nav__categories">
+        {categories.map((category) => (
+          <button
+            key={category}
+            type="button"
+            className={`nav__category-button ${currentCategory === category ? "active" : ""}`}
+            onClick={() => onCategoryChange(category)}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
 
+      <div className="nav__right-controls"> {/* Wrapper untuk search dan connect button */}
         <input
           className="nav__search"
           type="text"
-          placeholder="Search experiences, events..."
+          placeholder="Search experiences..."
           aria-label="Search"
         />
-
-        <ul className="nav__links">
-          <li>
-            <a href="/" className="nav__link">
-              Concerts
-            </a>
-          </li>
-          <li>
-            <a href="/" className="nav__link">
-              Sports
-            </a>
-          </li>
-          <li>
-            <a href="/" className="nav__link">
-              Arts & Theater
-            </a>
-          </li>
-          <li>
-            <a href="/" className="nav__link">
-              More
-            </a>
-          </li>
-        </ul>
+        {account ? (
+          <button type="button" className="nav__button nav__button--connected">
+            {account.slice(0, 6) + "..." + account.slice(-4)}
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="nav__button"
+            onClick={connectHandler}
+            aria-label="Connect Wallet"
+          >
+            Connect Wallet
+          </button>
+        )}
       </div>
-
-      {account ? (
-        <button type="button" className="nav__button nav__button--connected">
-          {account.slice(0, 6) + "..." + account.slice(-4)}
-        </button>
-      ) : (
-        <button
-          type="button"
-          className="nav__button"
-          onClick={connectHandler}
-          aria-label="Connect Wallet"
-        >
-          Connect Wallet
-        </button>
-      )}
     </nav>
   );
 };
