@@ -3,7 +3,7 @@ import "./Navigation.css";
 
 const categories = ["All", "Design", "Cloud Service", "Entertainment", "Other"];
 
-const Navigation = ({ account, setAccount, currentCategory, onCategoryChange }) => {
+const Navigation = ({ account, setAccount, currentCategory, onCategoryChange, searchQuery, onSearchChange }) => {
   const connectHandler = async () => {
     try {
       const accounts = await window.ethereum.request({
@@ -38,8 +38,10 @@ const Navigation = ({ account, setAccount, currentCategory, onCategoryChange }) 
         <input
           className="nav__search"
           type="text"
-          placeholder="Search experiences..."
+          placeholder="Search by name or provider..." // Placeholder diperjelas
           aria-label="Search"
+          value={searchQuery} // <-- Hubungkan dengan state
+          onChange={(e) => onSearchChange(e.target.value)} // <-- Panggil fungsi saat berubah
         />
         {account ? (
           <button type="button" className="nav__button nav__button--connected">
