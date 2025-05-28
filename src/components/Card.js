@@ -4,11 +4,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import "./Card.css";
 
 const Card = ({
-  subscription = {}, // Inisialisasi sebagai objek kosong untuk keamanan
-  // toggle, // Prop ini tampaknya tidak digunakan di dalam Card.js Anda
-  // setToggle,
-  // setSubscription,
-  tokenMaster,
+  subscription = {}, 
+  subChain,
   id, // Ini adalah localId yang Anda kirim dari App.js
   account,
 }) => {
@@ -16,11 +13,11 @@ const Card = ({
   const [alreadySubscribed, setAlreadySubscribed] = useState(false);
 
   const checkSubscriptionStatus = useCallback(async () => {
-    if (!tokenMaster || !account || !id) return; // 'id' di sini adalah localId dari App.js
+    if (!subChain || !account || !id) return; // 'id' di sini adalah localId dari App.js
                                                // yang seharusnya cocok dengan id langganan di kontrak
 
     try {
-      const subscribed = await tokenMaster.isSubscribed(id, account);
+      const subscribed = await subChain.hasBought(id, account);
       setAlreadySubscribed(subscribed);
 
       if (subscribed) {
@@ -32,7 +29,7 @@ const Card = ({
       const local = localStorage.getItem(`subscribed-${id}-${account}`);
       setAlreadySubscribed(local === "true");
     }
-  }, [tokenMaster, account, id]);
+  }, [subChain, account, id]);
 
   useEffect(() => {
     checkSubscriptionStatus();
@@ -48,7 +45,7 @@ const Card = ({
       const totalCost = BigInt(costPerMonthWei) * BigInt(monthsToSubscribe);
 
       // 'id' di sini haruslah id yang dikenali oleh smart contract
-      const tx = await tokenMaster.mint(id, monthsToSubscribe, {
+      const tx = await subChain.mint(id, monthsToSubscribe, {
         from: account,
         value: totalCost.toString(),
       });

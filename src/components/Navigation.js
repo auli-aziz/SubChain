@@ -1,9 +1,17 @@
 import { getAddress } from "ethers";
 import "./Navigation.css";
+import { Link } from "react-router-dom";
 
 const categories = ["All", "Design", "Cloud Service", "Entertainment", "Other"];
 
-const Navigation = ({ account, setAccount, currentCategory, onCategoryChange, searchQuery, onSearchChange }) => {
+const Navigation = ({
+  account,
+  setAccount,
+  currentCategory,
+  onCategoryChange,
+  searchQuery,
+  onSearchChange,
+}) => {
   const connectHandler = async () => {
     try {
       const accounts = await window.ethereum.request({
@@ -19,14 +27,18 @@ const Navigation = ({ account, setAccount, currentCategory, onCategoryChange, se
   return (
     <nav className="nav">
       <div className="nav__brand">
-        <h1 className="nav__logo">SubChain</h1>
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <h1 className="nav__logo">SubChain</h1>
+        </Link>
       </div>
       <div className="nav__categories">
         {categories.map((category) => (
           <button
             key={category}
             type="button"
-            className={`nav__category-button ${currentCategory === category ? "active" : ""}`}
+            className={`nav__category-button ${
+              currentCategory === category ? "active" : ""
+            }`}
             onClick={() => onCategoryChange(category)}
           >
             {category}
@@ -34,7 +46,9 @@ const Navigation = ({ account, setAccount, currentCategory, onCategoryChange, se
         ))}
       </div>
 
-      <div className="nav__right-controls"> {/* Wrapper untuk search dan connect button */}
+      <div className="nav__right-controls">
+        {" "}
+        {/* Wrapper untuk search dan connect button */}
         <input
           className="nav__search"
           type="text"
@@ -44,9 +58,14 @@ const Navigation = ({ account, setAccount, currentCategory, onCategoryChange, se
           onChange={(e) => onSearchChange(e.target.value)} // <-- Panggil fungsi saat berubah
         />
         {account ? (
-          <button type="button" className="nav__button nav__button--connected">
-            {account.slice(0, 6) + "..." + account.slice(-4)}
-          </button>
+          <Link to="/history" style={{ textDecoration: "none", color: "inherit" }}>
+            <button
+              type="button"
+              className="nav__button nav__button--connected"
+            >
+              {account.slice(0, 6) + "..." + account.slice(-4)}
+            </button>
+          </Link>
         ) : (
           <button
             type="button"

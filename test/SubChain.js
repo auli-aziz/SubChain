@@ -9,6 +9,7 @@ const SUB_MAX_MONTHS = 12;
 const SUB_DATE = "Apr 27";
 const SUB_TIME = "10:00AM";
 const SUB_PROVIDER = "Netflix";
+const SUB_CATEGORY = "Entertainment";
 
 describe("SubChain", () => {
   let subChain;
@@ -30,7 +31,8 @@ describe("SubChain", () => {
         SUB_MAX_MONTHS,
         SUB_DATE,
         SUB_TIME,
-        SUB_PROVIDER
+        SUB_PROVIDER,
+        SUB_CATEGORY
       );
     await transaction.wait();
   });
@@ -72,7 +74,7 @@ describe("SubChain", () => {
 
   describe("Minting", () => {
     const ID = 1;
-    const AMOUNT = ethers.parseEther("1");
+    const AMOUNT = ethers.parseEther("12");
 
     beforeEach(async () => {
       const transaction = await subChain
