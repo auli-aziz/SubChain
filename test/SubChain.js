@@ -26,13 +26,13 @@ describe("SubChain", () => {
     const transaction = await subChain
       .connect(deployer)
       .list(
-        SUB_NAME,
-        SUB_COST,
-        SUB_MAX_MONTHS,
-        SUB_DATE,
-        SUB_TIME,
-        SUB_PROVIDER,
-        SUB_CATEGORY
+        SUB_NAME,           // _name (string)
+        SUB_COST,           // _cost (uint256)
+        SUB_MAX_MONTHS,     // _maxMonths (uint256)
+        SUB_DATE,           // _date (string)
+        SUB_TIME,           // _time (string)
+        SUB_PROVIDER,       // _provider (string)
+        SUB_CATEGORY        // _category (string)
       );
     await transaction.wait();
   });
@@ -103,7 +103,7 @@ describe("SubChain", () => {
 
   describe("Withdrawing", () => {
     const ID = 1;
-    const SEAT = 50;
+    const MONTH = 1;
     const AMOUNT = ethers.parseEther("1", "ether");
     let balanceBefore;
 
@@ -112,7 +112,7 @@ describe("SubChain", () => {
 
       let transaction = await subChain
         .connect(buyer)
-        .mint(ID, SEAT, { value: AMOUNT });
+        .mint(ID, MONTH, { value: AMOUNT });
       await transaction.wait();
 
       transaction = await subChain.connect(deployer).withdraw();
